@@ -1,37 +1,37 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-
-// Security Gatekeeper Layer Checkpoint
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './routes/ProtectedRoute';
-
-// Real Application Module Interfaces
 import Login from './pages/auth/Login';
+import Register from './pages/auth/Register';
+import Dashboard from './pages/Dashboard';
 import SuperadminUsers from './pages/SuperadminUsers';
 
-function App() {
+export default function App() {
   return (
-    <Router>
+    <BrowserRouter>
       <Routes>
-        {/* Public Gateways */}
         <Route path="/login" element={<Login />} />
-        
-        {/* Protected Administration Channels 
-          Only authenticated users with the 'admin' role can cross this line.
-        */}
-        <Route 
-          path="/admin/users" 
-          element = {
+        <Route path="/register" element={<Register />} />
+
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['user']}>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
             <ProtectedRoute allowedRoles={['admin']}>
               <SuperadminUsers />
             </ProtectedRoute>
-          } 
+          }
         />
 
-        {/* Global System Fallback Redirect */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
-    </Router>
+    </BrowserRouter>
   );
 }
-
-export default App;

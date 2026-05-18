@@ -1,28 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useAuth } from '../context/AuthContext';
 
 export default function SuperadminUsers() {
+  const { logout } = useAuth();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const fetchUsers = async () => {
-    setLoading(true);
-    try {
-      const res = await axios.get(`/users?page=${page}&search=${search}`);
-      setUsers(res.data.data);
-      setTotalPages(res.data.last_page || 1);
-    } catch (err) {
-      console.error("Error syncing account orchestration views:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
-    fetchUsers();
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const res = await axios.get(`/users?page=${page}&search=${search}`);
+        if (!cancelled) {
+          setUsers(res.data.data);
+          setTotalPages(res.data.last_page || 1);
+        }
+      } catch (err) {
+        console.error('Error syncing account orchestration views:', err);
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
   }, [page, search]);
 
   return (
@@ -33,14 +40,25 @@ export default function SuperadminUsers() {
           <p className="text-sm text-luxury-muted mt-1">Superadmin profile clearance desk.</p>
         </div>
         
-        <div className="mt-4 md:mt-0">
+        <div className="mt-4 md:mt-0 flex flex-col sm:flex-row gap-3 sm:items-center">
           <input
             type="text"
             value={search}
-            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+            onChange={(e) => {
+              setLoading(true);
+              setSearch(e.target.value);
+              setPage(1);
+            }}
             placeholder="Search operator name or role..."
-            className="px-4 py-2 border border-luxury-muted/20 rounded text-sm w-full md:w-64 bg-luxury-beige/30 focus:outline-none focus:border-luxury-gold text-luxury-black"
+            className="px-4 py-2 border border-luxury-muted/20 rounded text-sm w-full md:w-64 bg-luxury-beige/30 focus:outline-none focus:border-luxury-brown text-luxury-black"
           />
+          <button
+            type="button"
+            onClick={logout}
+            className="px-4 py-2 rounded text-sm bg-luxury-brown text-luxury-white hover:bg-luxury-brown-dark transition whitespace-nowrap"
+          >
+            Log out
+          </button>
         </div>
       </div>
 
@@ -86,7 +104,10 @@ export default function SuperadminUsers() {
           {/* Pagination Controls */}
           <div className="p-4 bg-luxury-beige/10 border-t border-luxury-muted/10 flex items-center justify-between text-xs font-semibold tracking-wider text-luxury-black">
             <button
-              onClick={() => setPage(p => Math.max(p - 1, 1))}
+              onClick={() => {
+                setLoading(true);
+                setPage((p) => Math.max(p - 1, 1));
+              }}
               disabled={page === 1}
               className="px-4 py-2 bg-white border border-luxury-muted/20 rounded disabled:opacity-40 uppercase hover:bg-luxury-beige transition-all"
             >
@@ -94,7 +115,10 @@ export default function SuperadminUsers() {
             </button>
             <span className="text-luxury-muted">Page {page} of {totalPages}</span>
             <button
-              onClick={() => setPage(p => Math.min(p + 1, totalPages))}
+              onClick={() => {
+                setLoading(true);
+                setPage((p) => Math.min(p + 1, totalPages));
+              }}
               disabled={page === totalPages}
               className="px-4 py-2 bg-white border border-luxury-muted/20 rounded disabled:opacity-40 uppercase hover:bg-luxury-beige transition-all"
             >
