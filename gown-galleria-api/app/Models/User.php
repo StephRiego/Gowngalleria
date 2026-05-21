@@ -14,6 +14,8 @@ class User extends Authenticatable
     /** @use HasFactory<UserFactory> */
     use HasApiTokens, HasFactory, Notifiable;
 
+    public const ROLE_SUPERADMIN = 'superadmin';
+
     public const ROLE_ADMIN = 'admin';
 
     public const ROLE_USER = 'user';

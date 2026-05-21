@@ -1,2 +1,84 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
+
+@layer base {
+  body {
+    @apply bg-gg-beige text-gg-charcoal font-sans antialiased;
+  }
+}
+
+@layer components {
+  .glass-card {
+    background-color: rgb(255 255 255 / 0.82);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgb(255 255 255 / 0.65);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(61, 45, 31, 0.08);
+  }
+
+  .glass-card-hover {
+    background-color: rgb(255 255 255 / 0.82);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgb(255 255 255 / 0.65);
+    border-radius: 1rem;
+    box-shadow: 0 8px 32px rgba(61, 45, 31, 0.08);
+    transition: all 0.3s ease;
+  }
+
+  .glass-card-hover:hover {
+    box-shadow: 0 4px 20px rgba(200, 182, 255, 0.15);
+    transform: translateY(-2px);
+  }
+
+  .nav-pill-active {
+    background: linear-gradient(to right, rgb(212 175 55 / 0.2), rgb(200 182 255 / 0.2));
+    color: #3d3d3d;
+    border: 1px solid rgb(212 175 55 / 0.3);
+    box-shadow: 0 4px 20px rgba(200, 182, 255, 0.15);
+  }
+
+  .nav-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    transition: all 0.2s ease;
+  }
+
+  .nav-pill:hover {
+    background-color: #ffffff;
+    color: #3d3d3d;
+    box-shadow: 0 4px 20px rgba(200, 182, 255, 0.15);
+  }
+
+  .stat-trend-up {
+    color: #059669;
+    background-color: #ecfdf5;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .stat-trend-down {
+    color: #e11d48;
+    background-color: #fff1f2;
+    padding: 0.125rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .icon-glow-active {
+    filter: drop-shadow(0 0 5px rgba(200, 182, 255, 0.65));
+  }
+
+  .group:hover .icon-glow-hover,
+  .icon-glow-hover {
+    filter: drop-shadow(0 0 4px rgba(200, 182, 255, 0.35));
+  }
+}
