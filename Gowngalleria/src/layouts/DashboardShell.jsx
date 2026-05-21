@@ -21,7 +21,7 @@ export default function DashboardShell({
   };
 
   return (
-    <div className="min-h-screen bg-gg-beige flex">
+    <div className="min-h-screen #2A1F1C flex">
       {sidebarOpen && (
         <button
           type="button"
@@ -31,8 +31,9 @@ export default function DashboardShell({
         />
       )}
 
+      {/* ONLY COLOR CHANGED HERE */}
       <aside
-        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 glass-card lg:rounded-none lg:border-r lg:border-y-0 flex flex-col m-0 lg:m-0 transform transition-transform duration-300 ${
+        className={`fixed lg:static inset-y-0 left-0 z-50 w-72 glass-card lg:rounded-none lg:border-r lg:border-y-0 flex flex-col m-0 lg:m-0 transform transition-transform duration-300 bg-[#FAF0E6] ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'
         }`}
       >
