@@ -56,6 +56,7 @@ class User extends Authenticatable
     {
         return [
             'id' => $this->id,
+            'fullname' => $this->name,
             'name' => $this->name,
             'username' => $this->username,
             'email' => $this->email,

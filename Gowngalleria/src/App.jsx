@@ -8,6 +8,7 @@ import Register from './pages/auth/Register';
 import SuperadminDashboard from './pages/admin/SuperadminDashboard';
 import SuperadminUsers from './pages/admin/SuperadminUsers';
 import SuperadminShops from './pages/admin/SuperadminShops';
+import SuperadminAudit from './pages/admin/SuperadminAudit';
 import ShopAdminDashboard from './pages/shop/ShopAdminDashboard';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import ModulePlaceholder from './components/dashboard/ModulePlaceholder';
@@ -43,7 +44,7 @@ export default function App() {
           <Route path="users" element={<SuperadminUsers />} />
           <Route path="settings" element={<ModulePlaceholder title="System Settings" />} />
           <Route path="reports" element={<ModulePlaceholder title="Reports" />} />
-          <Route path="audit" element={<ModulePlaceholder title="Audit Trail" />} />
+          <Route path="audit" element={<SuperadminAudit />} />
         </Route>
 
         {/* Shop Admin — one shop operations */}

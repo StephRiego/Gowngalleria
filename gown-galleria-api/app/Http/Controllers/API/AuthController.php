@@ -25,6 +25,13 @@ class AuthController extends Controller
             ->first();
 
         if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+            ActivityLogService::log(
+                $user,
+                'login_failed',
+                'Failed login attempt for: '.$credentials['login'],
+                $request,
+            );
+
             return response()->json(['message' => 'Invalid credentials.'], 401);
         }
 
