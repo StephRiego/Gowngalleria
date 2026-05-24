@@ -9,37 +9,38 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => 'superadmin@gowngalleria.com'],
+        $accounts = [
             [
-                'name' => 'Super Admin',
+                'email' => 'superadmin@gowngalleria.com',
                 'username' => 'superadmin',
-                'password' => 'password',
+                'name' => 'Super Admin',
                 'role' => User::ROLE_SUPERADMIN,
-                'status' => 'active',
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'admin@gowngalleria.com'],
+            ],
             [
-                'name' => 'Admin User',
+                'email' => 'admin@gowngalleria.com',
                 'username' => 'admin',
-                'password' => 'password',
+                'name' => 'Admin User',
                 'role' => User::ROLE_ADMIN,
-                'status' => 'active',
-            ]
-        );
-
-        User::updateOrCreate(
-            ['email' => 'user@gowngalleria.com'],
+            ],
             [
-                'name' => 'Shop User',
+                'email' => 'user@gowngalleria.com',
                 'username' => 'shopuser',
-                'password' => 'password',
+                'name' => 'Shop User',
                 'role' => User::ROLE_USER,
-                'status' => 'active',
-            ]
-        );
+            ],
+        ];
+
+        foreach ($accounts as $account) {
+            User::updateOrCreate(
+                ['email' => $account['email']],
+                [
+                    'name' => $account['name'],
+                    'username' => $account['username'],
+                    'password' => 'password',
+                    'role' => $account['role'],
+                    'status' => 'active',
+                ],
+            );
+        }
     }
 }

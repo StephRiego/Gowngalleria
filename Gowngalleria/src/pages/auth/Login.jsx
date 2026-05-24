@@ -9,9 +9,9 @@ const LOGIN = {
   brand: 'Gown Galleria',
   tagline: 'Welcome back',
   subtitle: 'Log in to manage your shop.',
-  emailLabel: 'Email or username',
+  loginLabel: 'Username or email',
   passwordLabel: 'Password',
-  emailPlaceholder: 'you@gowngalleria.com',
+  loginPlaceholder: 'admin or admin@gowngalleria.com',
   submitLabel: 'Log in',
   submitLoadingLabel: 'Logging in...',
   rememberMe: 'Remember me',
@@ -39,7 +39,7 @@ export default function Login() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: localStorage.getItem('gg_remember_email') || '',
+      login: localStorage.getItem('gg_remember_login') || '',
     },
   });
 
@@ -57,14 +57,14 @@ export default function Login() {
     setServerError('');
     setIsSubmitting(true);
 
-    const result = await login(data.email, data.password);
+    const result = await login(data.login, data.password);
     setIsSubmitting(false);
 
     if (result.success) {
       if (rememberMe) {
-        localStorage.setItem('gg_remember_email', data.email);
+        localStorage.setItem('gg_remember_login', data.login);
       } else {
-        localStorage.removeItem('gg_remember_email');
+        localStorage.removeItem('gg_remember_login');
       }
       navigate(getHomePathForRole(result.user.role), { replace: true });
     } else {
@@ -101,15 +101,16 @@ export default function Login() {
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           <div>
-            <label className="text-sm font-medium text-luxury-black">{LOGIN.emailLabel}</label>
+            <label className="text-sm font-medium text-luxury-black">{LOGIN.loginLabel}</label>
             <input
               type="text"
-              {...register('email', { required: 'Email or username is required' })}
-              placeholder={LOGIN.emailPlaceholder}
-              className={inputClass(errors.email)}
+              autoComplete="username"
+              {...register('login', { required: 'Username or email is required' })}
+              placeholder={LOGIN.loginPlaceholder}
+              className={inputClass(errors.login)}
             />
-            {errors.email && (
-              <p className="text-xs text-red-600 mt-1">{errors.email.message}</p>
+            {errors.login && (
+              <p className="text-xs text-red-600 mt-1">{errors.login.message}</p>
             )}
           </div>
 

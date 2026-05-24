@@ -12,23 +12,23 @@ class AuthController extends Controller
 {
     public function login(Request $request): JsonResponse
     {
-        $credentials = $request->validate([
+        $data = $request->validate([
             'login' => ['required', 'string'],
             'password' => ['required', 'string'],
         ]);
 
         $user = User::query()
-            ->where(function ($query) use ($credentials) {
-                $query->where('email', $credentials['login'])
-                    ->orWhere('username', $credentials['login']);
+            ->where(function ($query) use ($data) {
+                $query->where('email', $data['login'])
+                    ->orWhere('username', $data['login']);
             })
             ->first();
 
-        if (! $user || ! Hash::check($credentials['password'], $user->password)) {
+        if (! $user || ! Hash::check($data['password'], $user->password)) {
             ActivityLogService::log(
                 $user,
                 'login_failed',
-                'Failed login attempt for: '.$credentials['login'],
+                'Failed login attempt for: '.$data['login'],
                 $request,
             );
 

@@ -1,12 +1,15 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
-axios.defaults.baseURL = 'http://localhost:8000/api';
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL || '/api';
 axios.defaults.headers.common['Accept'] = 'application/json';
 
 const AuthContext = createContext(null);
 
 function extractErrorMessage(error, fallback) {
+  if (!error.response) {
+    return 'Cannot reach the server. Start the API with: php artisan serve (in gown-galleria-api).';
+  }
   const data = error.response?.data;
   if (data?.message) return data.message;
   if (data?.errors) {
@@ -30,7 +33,10 @@ export function AuthProvider({ children }) {
 
   useEffect(() => {
     const token = localStorage.getItem('gg_auth_token');
-    if (!token) return;
+    if (!token) {
+      setLoading(false);
+      return;
+    }
 
     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
